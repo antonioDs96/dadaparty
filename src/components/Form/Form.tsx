@@ -139,6 +139,13 @@ const Form: FC = () => {
                             <option value="Festa Base plus">Festa Base +</option>
                         </select>
                     </div>
+                    <div>
+                        <label htmlFor="deposit"
+                               className="block mb-2 text-sm font-medium text">Deposito</label>
+                        <input type="text" id="deposit" name="deposit" value={eventFormData.deposit}
+                               className={styles.inputCustomClassDark} onChange={handleChange}
+                               placeholder="Deposito..." min="0" />
+                    </div>
                 </div>
                 <div className="flex items-start mb-6">
                     <div className="flex items-center h-5">
@@ -147,7 +154,8 @@ const Form: FC = () => {
                                required/>
                     </div>
                     <label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-900">Sono a conoscenza
-                        <Link href="/termini" className="text-fuchsia-500 hover:underline"> dei termini e delle condizioni</Link>.</label>
+                        <Link href="/termini" className="text-fuchsia-500 hover:underline"> dei termini e delle
+                            condizioni</Link>.</label>
                 </div>
                 <button type="submit"
                         className="text-white bg-third hover:bg-fuchsia-800 focus:ring-4 focus:outline-none focus:ring-fuchsia-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit

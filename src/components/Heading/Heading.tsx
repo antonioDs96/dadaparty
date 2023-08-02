@@ -1,6 +1,7 @@
 import {FC} from "react";
 import Image from "next/image";
 import styles from "./Heading.module.css";
+import Kids from "../../../public/kids.png"
 import ArrowDown from "../../../public/arrow-down.svg"
 
 const Heading: FC = () => {
@@ -22,7 +23,7 @@ const Heading: FC = () => {
                 </div>
             </div>
             <Image
-                src="/../public/kids.png"
+                src={Kids}
                 alt="DadaParty"
                 width={500}
                 height={500}
