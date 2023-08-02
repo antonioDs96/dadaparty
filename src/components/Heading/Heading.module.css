@@ -1,0 +1,7 @@
+.roundedImg {
+    border-radius: 5.5rem;
+}
+
+.btn:hover {
+    background-color: var(--fifth-color);
+}

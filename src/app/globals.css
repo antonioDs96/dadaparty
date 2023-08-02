@@ -1,27 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+    --first-color: #222831;
+    --second-color: #393e46;
+    --third-color: #ea298f;
+    --fourth-color: #fcfcfc;
+    --fifth-color: #C02276;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    & h1 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        @apply text-4xl;
+    }
+
+    color: var(--first-color);
+    background: var(--fourth-color);
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48;
+    position: relative;
+    top: 1px;
+}
+
+
+.fit {
+    @apply min-h-screen;
+    min-height: 100dvh;
+    overflow: auto;
+}
+
+.bg-first {
+    background: var(--first-color);
+}
+
+.bg-second {
+    background: var(--second-color);
+}
+
+.bg-third {
+    background: var(--third-color);
+}
+
+.bg-fourth {
+    background: var(--fourth-color);
+}
+
+.bg-fifth {
+    background: var(--fifth-color);
 }
