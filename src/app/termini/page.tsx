@@ -1,4 +1,5 @@
 import styles from "./Terms.module.css";
+import Link from "next/link";
 
 const Page = () => {
     return <main className={styles.wrap}>
@@ -7,35 +8,82 @@ const Page = () => {
                 <h2>Terms & Conditions</h2>
             </div>
             <div className={styles.container__content}>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed
-                    cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
-                    Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget
-                    nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-                    Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. </p>
-                <p>Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed
-                    convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis
-                    vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum.
-                    Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum
-                    velit. </p>
-                <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec
-                    ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis
-                    turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat
-                    imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus
-                    suscipit. </p>
-                <p>Sed lectus. Integer euismod lacus luctus magna. Quisque cursus, metus vitae pharetra auctor, sem
-                    massa mattis sem, at interdum magna augue eget diam. Vestibulum ante ipsum primis in faucibus orci
-                    luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui. Praesent blandit dolor. Sed
-                    non quam. In vel mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet.
-                    Donec lacus nunc, viverra nec, blandit vel, egestas et, augue. Vestibulum tincidunt malesuada
-                    tellus. Ut ultrices ultrices enim. Curabitur sit amet mauris. </p>
-                <p>Morbi in dui quis est pulvinar ullamcorper. Nulla facilisi. Integer lacinia sollicitudin massa. Cras
-                    metus. Sed aliquet risus a tortor. Integer id quam. Morbi mi. Quisque nisl felis, venenatis
-                    tristique, dignissim in, ultrices sit amet, augue. Proin sodales libero eget ante. Nulla quam.
-                    Aenean laoreet. </p>
+                <p>INFORMAZIONI GENERICHE PER IL CLIENTE, DADAPARTY INFORMA</p>
+
+                <p>1-DIRITTO DI RECESSO CON TOTALE RIMBORSO ENTRO LE 24 ORE</p>
+
+                <p>2-IL CLIENTE NON HA NESSUN DIRITTO A RECEDERE QUANTO FIRMATO DA ENTRAMBE LE PARTI PER DISDIRE LA
+                    DATA DA VOI SCELTA,CASO CONTRARIO VERRA’ DECLINATO L ’ACCONTO VERSATO</p>
+
+                <p>3-SUPERATO IL NUMERO DI 30 BAMBINI E’ NECESSARIA UNA TERZA ASSISTENTE, SUPERATI I 45 UNA QUARTA (e/o
+                    50 ADULTI)AL COSTO DI €30.00 CADAUNA IN AGGIUNTA ALL’IMPORTO STABILITO AL MOMENTO DELLA
+                    PRENOTAZIONE. (ALLA MANCATA COMUNICAZIONE VERRA’COMUNQUE ADDEBITATO IL SUPPLEMENTO )
+                    N.B. UNA VOLTA CONFERMATA L’ASSISTENTE SUPPLEMENTARE NON POTRA’ ESSERE ANNULLATA DAL SERVIZIO, ANCHE
+                    SE I BAMBINI PRESENTI SARANNO INFERIORI A 30 UNITA’.</p>
+
+                <p>4-SUPERATO IL TEMPO STABILITO VERRANNO ADDEBITATE 30.00€ OGNI 30 MINUTI, GIA’ TRASCORSI I PRIMI
+                    15.</p>
+
+                <p>5-TOVAGLIATO E BEVANDE DOVRANNO ESSERE CONSEGNATE IL GIORNO PRIMA CON ACCORDO TELEFONICO,SARA’ VS
+                    PREMURA CONTATTARCI PER EVENTUALI SERVIZI EXT.</p>
+
+                <p>6-LE NOSTRE PROPOSTE CATERING PER ADULTI NON INCLUDONO BEVANDE E TOVAGLIATO. SERVIZI AGGIUNTIVI
+                    ,RIGUARDO TOVAGLIATO BEVANDE E QUALSIASI ESIGENZA,AVRANNO COSTI SUPPLEMENTARI .(LISTINO DISPONIBILE
+                    IN RECEPTION)</p>
+
+                <p>7-IL CATERING PER IL PRIMO TURNO DOVRA’ PERVENIRE IN SEDE ENTRO 30 MIN DOPO L’INIZIO DELL’ EVENTO
+                    ,45 MIN DOPO NEL TURNO DELLA MATTINA E SERALE (VEDI PUNTO 4)</p>
+
+                <p>8-NON SI POTRA’ PROLUNGARE LA DURATA DELL’ EVENTO SENZA PREAVVISO.</p>
+
+                <p>9-SE AVETE PREFERITO IL PRIMO TURNO (DALLE 15:00 O 15:30 ) E’ IMPORTANTE RISPETTARE L’ORARIO
+                    STABILITO,CAUSA UNA PENALE DI €50.00 CHE ANDRA’ A COMPENSARE IL DISAGIO DELL’ EVENTO SUCCESSIVO.</p>
+
+                <p> 10-NEL CASO SI FESTEGGERA’ IN PIU’ PERSONE IL SUPPLEMENTO DA ADD IN QUALSIASI PACCHETTO E’DI€ 20.00
+                    A FESTEGGIATO.</p>
+
+                <p>11-DADAPARTY APRIRA’ L’INGRESSO 10 MINUTI PRIMA DELL’ INIZIO DEL VOSTRO EVENTO.</p>
+
+                <p>12-OPERATORI SWEET-TABLE DOVRANNO CONTATTARCI PER ACCORDARE EVENTUALI ESIGENZE,NON E’ FATTIBILE
+                    L’ACCESSO PRIMA DI 30 MINUTI PRIMA DELL’ ORARIO DELL’EVENTO IN PROGRAMMA.SALVO DIVERSE
+                    DISPOSIZIONI.</p>
+
+                <p>13-LA SOSPENSIONE DELL’ EVENTO DOVRA’ESSERE COMUNICATA 24 ORE PRIMA .LA MANCATA PRESENZA NEI PRIMI
+                    30-MINUTI SENZA PREAVVISO COMPORTERA’ L’ANNULLAMENTO DELL’ EVENTO.
+                    IN ASSENZA DI COMUNICAZIONE VERRA’ADDEBITATO L’INTERO IMPORTO SOTTOSCRITTO ALLA FIRMA.</p>
+
+                <p>14-DADA PARTY SI ASSUME OGNI TIPO DI RESPONSABILITA’ SU DANNI PROVOCATI DA CIBO E BEVANDE
+                    ALL’INTERNO DELLA STRUTTURA (INFO POLIZZA ASSICURATIVA) SOLO SE MESSI A DISPOSIZIONE DEI NOSTRI
+                    CATERING.</p>
+                <p> 15-DADAPARTY SI ASSUME OGNI TIPO DI RESPONSABILITA’ CIVILE PROVOCATA A DANNI A PERSONE SOLO ALL’
+                    INTERNO DELLA STRUTTURA (INFO POLIZZA ASSICURATIVA)</p>
+
+                <p>16-DADAPARTY NON RISPONDE A NESSUN RECLAMO DI OGGETTI SMARRITI O DANNEGGIATI.</p>
+
+                <p>17-DADAPARTY NON RISPONDE A NESSUN DANNO CAUSATO ALLA SOSPENSIONE DELL’EVENTO PER DANNI
+                    ATMOSFERICI,PER MOTIVI ELETTRICI ,DANNI ALLA STRUTTURA E QUALSIASI ALTRO TIPO DI DISAGIO CHE NON
+                    POTRA’PERMETTERVI IL SEGUITO DELL’ EVENTO,DADAPARTY RIMETTERA’A VOSTRA DISPOSIZIONE IL PRIMO GIORNO
+                    UTILE SE PREFERITO DALLA VOSTRA SIGNORIA.</p>
+
+                <p>18-DADAPARTY, NON POTRA’ METTERE A VS DISPOSIZIONE FILMATI E VIDEOREGISTRAZIONI RIGUARDANTI
+                    L’INTERNO DELLA STRUTTURA SE NON RICHIESTI DALLE FORZE DELL’ ORDINE.</p>
+
+                <p>19-EVENTUALE CHIUSURA DISPOSTA DA D.P.C.M O DALLE FORZE DELL’ORDINE DADAPARTY RIMETTERA’A VS
+                    DISPOSIZIONE IL PRIMO GIORNO UTILE SE DA VOI PREFERITO ENTRO 60 GG. DALLA NUOVA DELIBERA,CAUSA
+                    CONTRARIO VERRA’ DECLINATO L’ ACCONTO VERSATO.</p>
+
+                <p>NUOVI CLIENTI O PERSONE ACCOMPAGNATE DA UN UTENTE DELLA STRUTTURA POTRANNO VISIONARE LE SALE
+                    DURANTE IL CORSO DEL VS EVENTO.
+                    -DIVIETO ASSOLUTO DI SPARA CORIANDOLI ALL’INTERNO DELLA STRUTTURA.
+                    -DADAPARTY NON ACCETTA INCOMPRENSIONI RIGUARDO PUNTO 3 e 4 -
+                    -I NOSTRI PACCHETTI MESSI IN VISIONE ALLA FIRMA NON INCLUDONO ANIMAZIONE SPETTACOLI O OPERATORI DI
+                    INTRATTENIMENTO.</p>
             </div>
             <div className={styles.container__nav}>
-                <small>By clicking 'Accept' you are agreeing to our terms and conditions.</small>
-                <a className={styles.button} href="#">Accetto</a>
+                <small>Accetti termini e condizioni?</small>
+                <Link className={styles.button} href="/">
+                    <button>Accetto</button>
+                </Link>
             </div>
         </section>
     </main>
