@@ -1,0 +1,52 @@
+import jsPDF from "jspdf";
+import {EventFormData} from "@/components/Form/Form.types";
+import {ChangeEvent} from "react";
+import {DateValueType} from "react-tailwindcss-datepicker";
+
+export const renderPdf = async (eventFormData: EventFormData) => {
+    var doc = new jsPDF();
+
+    //start writing pdf
+
+    //headline
+    doc.setFontSize(25);
+    doc.text('DadaParty', 10, 10);
+
+    //body
+    doc.setFontSize(20);
+    doc.text('Modulo Prenotazione del : ' + eventFormData.submitDate, 10, 20);
+    doc.text('Data Evento: ' + eventFormData.eventDate?.startDate, 10, 30);
+    doc.text('Dalle: ' + eventFormData.eventStartTime, 10, 40);
+    doc.text('Alle: ' + eventFormData.eventEndTime, 10, 50);
+    doc.text('Nome Festeggiato: ' + eventFormData.userName, 10, 60);
+    doc.text('Cognome Festeggiato: ' + eventFormData.userSurname, 10, 70);
+    doc.text('Età Festeggiato: ' + eventFormData.userAge, 10, 80);
+    doc.text('Telefono: ' + eventFormData.userPhone, 10, 90);
+    doc.text('Comune di Residenza:', 10, 100);
+    doc.text('Dati Evento:', 10, 110);
+    doc.text('Servizio Scelto: ' + eventFormData.chosenService, 10, 120);
+    doc.text('Acconto ricevuto in data odierna: ' + eventFormData.deposit, 10, 130);
+    doc.text('Totale:', 130, 130);
+
+    //FIRME e altro
+    doc.text('Firme:', 10, 140);
+    //set font size lower
+    doc.setFontSize(10);
+    doc.text('Funzionario o responsabile DadaParty', 10, 150);
+    //an underline for signing
+    doc.line(10, 160, 60, 160);
+    doc.text('IN QUALITA’DI GENITORE O FACENTE LE VECI'.toLowerCase(), 120, 150);
+    //an underline for signing
+    doc.line(120, 160, 180, 160);
+
+    doc.text('Eventuali' + ' OPERATORI ESTERNI,PER ALLESTIMENTO SEET-TABLE DOVRANNO METTERSI IN CONTATTO CON UN NOSTRO OPERATORE.\n'.toLowerCase() +
+        'Ricordiamo ' + 'CHE PER TALE SERVIZIO BISOGNA ESSERE MUNUTI DI STRUTTURA CARTOLLENISTICA.\n'.toLowerCase() +
+        'N.B: ' + 'Divieto' + 'ASSOLUTO DI APPLICARE STAMPE SULLE NOSTRE SCENOGRAFIE'.toLowerCase(), 10, 170);
+
+    //save pdf
+    doc.save("form_data.pdf");
+}
+
+export const isDataValueType = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | DateValueType): e is DateValueType => {
+    return e != null && "startDate" in e;
+}
