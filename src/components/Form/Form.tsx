@@ -1,21 +1,26 @@
 'use client';
 
-import React, {ChangeEvent, FC, FormEvent, useState} from "react";
+import React, {ChangeEvent, FC, FormEvent, useRef, useState} from "react";
 import {EventFormData} from "@/components/Form/Form.types";
 import Datepicker, {DateValueType} from "react-tailwindcss-datepicker";
 import styles from "./Form.module.css";
 import TimeInput from "@/components/TimeInput/TimeInput";
 import Link from "next/link";
+import {format} from "date-fns";
 import jsPDF from "jspdf";
+
 
 const isDataValueType = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | DateValueType): e is DateValueType => {
     return e != null && "startDate" in e;
 }
 
 const Form: FC = () => {
+    const ref = useRef<HTMLDivElement>(null);
     const [eventFormData, setEventFormData] = useState<EventFormData>({
+        submitDate: format(new Date(), 'dd/MM/yyyy'),
         eventDate: null,
-        eventTime: '',
+        eventStartTime: '',
+        eventEndTime: '',
         userName: '',
         userSurname: '',
         userAge: 0,
@@ -45,16 +50,36 @@ const Form: FC = () => {
     }
 
     const renderPdf = async () => {
-        const doc = new jsPDF();
+        var doc = new jsPDF();
+        doc.setFontSize(25);
+        doc.text('DadaParty', 10, 10);
+        doc.setFontSize(20);
+        doc.text('Modulo Prenotazione del : ' + eventFormData.submitDate, 10, 20);
+        doc.text('Data Evento: ' + eventFormData.eventDate?.startDate, 10, 30);
+        doc.text('Dalle: ' + eventFormData.eventStartTime, 10, 40);
+        doc.text('Alle: ' + eventFormData.eventEndTime, 10, 50);
+        doc.text('Nome Festeggiato: ' + eventFormData.userName, 10, 60);
+        doc.text('Cognome Festeggiato: ' + eventFormData.userSurname, 10, 70);
+        doc.text('Età Festeggiato: ' + eventFormData.userAge, 10, 80);
+        doc.text('Telefono: ' + eventFormData.userPhone, 10, 90);
+        doc.text('Comune di Residenza:', 10, 100);
+        doc.text('Dati Evento:', 10, 110);
+        doc.text('Servizio Scelto: ' + eventFormData.chosenService, 10, 120);
+        doc.text('Acconto ricevuto in data odierna: ' + eventFormData.deposit, 10, 130);
+        doc.text('Totale:', 130, 130);
+        doc.text('Firme:', 10, 140);
+        //set font size lower
+        doc.setFontSize(10);
+        doc.text('Funzionario o responsabile DadaParty', 10, 150);
+        //an underline for signing
+        doc.line(10, 160, 60, 160);
+        doc.text('IN QUALITA’DI GENITORE O FACENTE LE VECI'.toLowerCase(), 120, 150);
+        //an underline for signing
+        doc.line(120, 160, 180, 160);
 
-        await doc.html(`<div>
-            <h1>Modulo prenotazione DADAPARTY del ${eventFormData?.eventDate?.startDate}</h1>
-            <p>Nome: ${eventFormData.userName}</p>
-            <p>Cognome: ${eventFormData.userSurname}</p>
-            <p>Età: ${eventFormData.userAge}</p>
-            <p>Telefono: ${eventFormData.userPhone}</p>
-            <p>Servizio scelto: ${eventFormData.chosenService}</p>
-        </div>`)
+        doc.text('Eventuali' + ' OPERATORI ESTERNI,PER ALLESTIMENTO SEET-TABLE DOVRANNO METTERSI IN CONTATTO CON UN NOSTRO OPERATORE.\n'.toLowerCase() +
+            'Ricordiamo ' + 'CHE PER TALE SERVIZIO BISOGNA ESSERE MUNUTI DI STRUTTURA CARTOLLENISTICA.\n'.toLowerCase() +
+            'N.B: ' + 'Divieto' + 'ASSOLUTO DI APPLICARE STAMPE SULLE NOSTRE SCENOGRAFIE'.toLowerCase(), 10, 170);
 
 
         doc.save("form_data.pdf");
@@ -65,13 +90,14 @@ const Form: FC = () => {
         e.preventDefault();
         const eventDateObject = eventFormData.eventDate;
         const eventDate = eventDateObject?.startDate;
-        if (eventDate == undefined) {
+        if (eventDate === undefined) {
             openPopup();
             return;
         }
 
         renderPdf();
     }
+
 
     return (
         <>
@@ -94,9 +120,14 @@ const Form: FC = () => {
                                     primaryColor={"fuchsia"}/>
                     </div>
                     <div>
-                        <label htmlFor="eventTime"
-                               className="block mb-2 text-sm font-medium">Orario Evento</label>
-                        <TimeInput onChange={handleChange} value={eventFormData.eventTime}/>
+                        <label htmlFor="eventStartTime"
+                               className="block mb-2 text-sm font-medium">Orario Inizio Evento</label>
+                        <TimeInput onChange={handleChange} value={eventFormData.eventStartTime} name="eventStartTime"/>
+                    </div>
+                    <div>
+                        <label htmlFor="eventEndTime"
+                               className="block mb-2 text-sm font-medium">Orario Fine Evento</label>
+                        <TimeInput onChange={handleChange} value={eventFormData.eventEndTime} name="eventEndTime"/>
                     </div>
                     <div>
                         <label htmlFor="userName"
@@ -144,7 +175,7 @@ const Form: FC = () => {
                                className="block mb-2 text-sm font-medium text">Deposito</label>
                         <input type="text" id="deposit" name="deposit" value={eventFormData.deposit}
                                className={styles.inputCustomClassDark} onChange={handleChange}
-                               placeholder="Deposito..." min="0" />
+                               placeholder="Deposito..." min="0"/>
                     </div>
                 </div>
                 <div className="flex items-start mb-6">
@@ -154,7 +185,8 @@ const Form: FC = () => {
                                required/>
                     </div>
                     <label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-900">Sono a conoscenza
-                        <Link href="/termini" className="text-fuchsia-500 hover:underline"> dei termini e delle
+                        <Link id="remember" href="/termini" className="text-fuchsia-500 hover:underline"> dei termini e
+                            delle
                             condizioni</Link>.</label>
                 </div>
                 <button type="submit"

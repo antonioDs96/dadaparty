@@ -1,12 +1,14 @@
 import {DateValueType} from "react-tailwindcss-datepicker";
 
 export interface EventFormData {
-    eventDate: DateValueType;
-    eventTime: string | undefined;
+    submitDate: string;
+    eventDate: DateValueType | null;
+    eventStartTime: string;
+    eventEndTime: string;
     userName: string;
     userSurname: string;
-    userPhone: string;
     userAge: number;
+    userPhone: string;
     chosenService: string;
     deposit: number;
 }
