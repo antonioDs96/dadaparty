@@ -18,30 +18,30 @@ export const renderPdf = async (eventFormData: EventFormData) => {
     doc.text('Data Evento: ' + eventFormData.eventDate?.startDate, 10, 30);
     doc.text('Dalle: ' + eventFormData.eventStartTime, 10, 40);
     doc.text('Alle: ' + eventFormData.eventEndTime, 10, 50);
-    doc.text('Nome Festeggiato: ' + eventFormData.userName, 10, 60);
-    doc.text('Cognome Festeggiato: ' + eventFormData.userSurname, 10, 70);
-    doc.text('Età Festeggiato: ' + eventFormData.userAge, 10, 80);
-    doc.text('Telefono: ' + eventFormData.userPhone, 10, 90);
-    doc.text('Comune di Residenza:', 10, 100);
-    doc.text('Dati Evento:', 10, 110);
-    doc.text('Servizio Scelto: ' + eventFormData.chosenService, 10, 120);
-    doc.text('Acconto ricevuto in data odierna: ' + eventFormData.deposit, 10, 130);
-    doc.text('Totale:', 130, 130);
+    doc.text('Nome Festeggiato: ' + eventFormData.userName, 10, 70);
+    doc.text('Cognome Festeggiato: ' + eventFormData.userSurname, 10, 80);
+    doc.text('Età Festeggiato: ' + eventFormData.userAge, 10, 90);
+    doc.text('Telefono: ' + eventFormData.userPhone, 10, 100);
+    doc.text('Comune di Residenza: ' + eventFormData.originTown, 10, 110);
+    // doc.text('Dati Evento:', 10, 110);
+    doc.text('Servizio Scelto: ' + eventFormData.chosenService, 10, 130);
+    doc.text('Acconto ricevuto in data odierna: ' + eventFormData.deposit, 10, 140);
+    doc.text('Totale:', 130, 140);
 
     //FIRME e altro
-    doc.text('Firme:', 10, 140);
+    doc.text('Firme:', 10, 150);
     //set font size lower
     doc.setFontSize(10);
-    doc.text('Funzionario o responsabile DadaParty', 10, 150);
+    doc.text('Funzionario o responsabile DadaParty', 10, 160);
     //an underline for signing
-    doc.line(10, 160, 60, 160);
-    doc.text('IN QUALITA’DI GENITORE O FACENTE LE VECI'.toLowerCase(), 120, 150);
+    doc.line(10, 170, 60, 170);
+    doc.text('IN QUALITA’DI GENITORE O FACENTE LE VECI'.toLowerCase(), 120, 160);
     //an underline for signing
-    doc.line(120, 160, 180, 160);
+    doc.line(120, 170, 180, 170);
 
     doc.text('Eventuali' + ' OPERATORI ESTERNI,PER ALLESTIMENTO SEET-TABLE DOVRANNO METTERSI IN CONTATTO CON UN NOSTRO OPERATORE.\n'.toLowerCase() +
         'Ricordiamo ' + 'CHE PER TALE SERVIZIO BISOGNA ESSERE MUNUTI DI STRUTTURA CARTOLLENISTICA.\n'.toLowerCase() +
-        'N.B: ' + 'Divieto' + 'ASSOLUTO DI APPLICARE STAMPE SULLE NOSTRE SCENOGRAFIE'.toLowerCase(), 10, 170);
+        'N.B: ' + 'Divieto' + 'ASSOLUTO DI APPLICARE STAMPE SULLE NOSTRE SCENOGRAFIE'.toLowerCase(), 10, 190);
 
     //save pdf
     doc.save("form_data.pdf");
@@ -49,4 +49,20 @@ export const renderPdf = async (eventFormData: EventFormData) => {
 
 export const isDataValueType = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | DateValueType): e is DateValueType => {
     return e != null && "startDate" in e;
+}
+
+
+export const translatedFormFields: Record<keyof EventFormData, string> = {
+    submitDate: "Data di compilazione",
+    eventDate: "Data dell'evento",
+    eventStartTime: "Ora di inizio",
+    eventEndTime: "Ora di fine",
+    userName: "Nome",
+    userSurname: "Cognome",
+    userAge: "Età",
+    userPhone: "Telefono",
+    originTown: "Comune di residenza",
+    chosenService: "Servizio scelto",
+    deposit: "Acconto",
+    agreedToTerms: "Accettazione dei termini"
 }

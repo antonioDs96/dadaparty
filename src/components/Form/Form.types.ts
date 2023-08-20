@@ -9,6 +9,8 @@ export interface EventFormData {
     userSurname: string;
     userAge: number;
     userPhone: string;
-    chosenService: string;
+    originTown: string;
+    chosenService: "Mattina" | "Primo Turno" | "Serale" | "All Inclusive" | "";
     deposit: number;
+    agreedToTerms: boolean;
 }

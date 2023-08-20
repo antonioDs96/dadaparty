@@ -27,7 +27,6 @@ const Heading: FC = () => {
                 alt="DadaParty"
                 width={500}
                 height={500}
-                layout="responsive"
                 className={styles.roundedImg}
                 priority
             />

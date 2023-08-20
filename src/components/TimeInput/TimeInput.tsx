@@ -15,7 +15,7 @@ const TimeInput: FC<TimeInputProps> = ({value, onChange, name}) => {
                 id={name}
                 className="dark:bg-slate-800 dark:text-white/80 border border-gray-300 text-sm rounded-lg focus:border-fuchsia-500 focus:ring-fuchsia-500/20 block w-full p-2.5"
                 placeholder="17-51"
-                required
+
                 type="time"
                 name={name}
                 value={value}
