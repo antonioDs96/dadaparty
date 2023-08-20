@@ -1,7 +1,12 @@
+'use client'
+
 import styles from "./Terms.module.css";
 import Link from "next/link";
+import useTermsStore from "@/store/termsStore/termsStore";
 
 const Page = () => {
+    const acceptTerms = useTermsStore(state => state.acceptTerms);
+
     return <main className={styles.wrap}>
         <section className={styles.container}>
             <div className={styles.container__heading}>
@@ -82,7 +87,7 @@ const Page = () => {
             <div className={styles.container__nav}>
                 <small>Accetti termini e condizioni?</small>
                 <Link className={styles.button} href="/">
-                    <button>Accetto</button>
+                    <button onClick={() => acceptTerms()}>Accetto</button>
                 </Link>
             </div>
         </section>

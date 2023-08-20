@@ -9,10 +9,13 @@ import Link from "next/link";
 import {format} from "date-fns";
 import {isDataValueType, renderPdf, translatedFormFields} from "@/components/Form/Form.helpers";
 import useAlertStore from "@/store/alert/AlertStore";
+import useTermsStore from "@/store/termsStore/termsStore";
 
 
 const Form: FC = () => {
     const openAlert = useAlertStore(state => state.openAlert);
+    const acceptedTerms = useTermsStore(state => state.acceptedTerms);
+    const toggleTerms = useTermsStore(state => state.toggleTerms);
 
     const [eventFormData, setEventFormData] = useState<EventFormData>({
         submitDate: format(new Date(), 'dd/MM/yyyy'),
@@ -26,7 +29,7 @@ const Form: FC = () => {
         originTown: 'Lecce',
         chosenService: 'All Inclusive',
         deposit: 0,
-        agreedToTerms: false
+        agreedToTerms: acceptedTerms,
     })
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement> | DateValueType) => {
@@ -37,6 +40,7 @@ const Form: FC = () => {
             }))
         }
         const {name, type} = event.target;
+        if (name === 'agreedToTerms') toggleTerms();
         if (type === 'checkbox') {
             const {checked} = event.target as HTMLInputElement;
             setEventFormData(prevState => ({
@@ -175,7 +179,7 @@ const Form: FC = () => {
                     </div>
                     <div>
                         <label htmlFor="deposit"
-                               className="block mb-2 text-sm font-medium text">Deposito</label>
+                               className="block mb-2 text-sm font-medium text">Acconto</label>
                         <input type="number" id="deposit" name="deposit" value={eventFormData.deposit}
                                className={styles.inputCustomClassDark} onChange={handleChange}
                                placeholder="Deposito..." min="0"/>
