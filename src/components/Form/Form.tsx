@@ -145,7 +145,8 @@ const Form: FC = () => {
                                className="block mb-2 text-sm font-medium text">Nome Festeggiato</label>
                         <input type="text" id="userName" name="userName" value={eventFormData.userName}
                                className={styles.inputCustomClassDark} onChange={handleChange}
-                               placeholder="Nome..." pattern="[A-Za-z\s]+" title="Ammesse solo lettere"/>
+                               placeholder="Nome..." pattern="[A-Za-z\sàèéìòùçÀÈÉÌÒÙÇ]+"
+                               title="Ammesse solo lettere"/>
                     </div>
                     <div>
                         <label htmlFor="userSurname"
@@ -153,7 +154,8 @@ const Form: FC = () => {
                         <input type="text" id="userSurname" name="userSurname" value={eventFormData.userSurname}
                                onChange={handleChange}
                                className={styles.inputCustomClassDark}
-                               placeholder="Cognome..." pattern="[A-Za-z\s]+" title="Ammesse solo lettere"/>
+                               placeholder="Cognome..." pattern="[A-Za-z\sàèéìòùçÀÈÉÌÒÙÇ]+"
+                               title="Ammesse solo lettere"/>
                     </div>
                     <div>
                         <label htmlFor="userAge"
@@ -176,7 +178,8 @@ const Form: FC = () => {
                         <input type="text" id="originTown" name="originTown" value={eventFormData.originTown}
                                onChange={handleChange}
                                className={styles.inputCustomClassDark}
-                               placeholder="Comune di Residenza..." pattern="[A-Za-z\s]+" title="Ammesse solo lettere"/>
+                               placeholder="Comune di Residenza..." pattern="[A-Za-z\sàèéìòùçÀÈÉÌÒÙÇ]+"
+                               title="Ammesse solo lettere"/>
                     </div>
                     <div>
                         <label htmlFor="chosenService"
