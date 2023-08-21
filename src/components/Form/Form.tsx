@@ -14,6 +14,7 @@ const Form: FC = () => {
     const openAlert = useAlertStore(state => state.openAlert);
 
     const [isDark, setIsDark] = useState(false);
+
     const [eventFormData, setEventFormData] = useState<EventFormData>({
         submitDate: format(new Date(), 'dd/MM/yyyy'),
         eventDate: null,
@@ -29,6 +30,14 @@ const Form: FC = () => {
         total: 0,
     })
 
+    const handleNumericFieldsChange = (name: string, value: number) => {
+        setEventFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    }
+
+
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement> | DateValueType) => {
         if (isDataValueType(event)) {
             return setEventFormData(prevState => ({
@@ -37,10 +46,14 @@ const Form: FC = () => {
             }))
         }
         const {name, value} = event.target;
-        setEventFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+        if (name === 'userAge' || name === 'deposit' || name === 'total') {
+            handleNumericFieldsChange(name, parseFloat(value));
+        } else {
+            setEventFormData(prevState => ({
+                ...prevState,
+                [name]: value
+            }));
+        }
     }
 
     const openPopup = () => {
@@ -157,7 +170,7 @@ const Form: FC = () => {
                                className="block mb-2 text-sm font-medium text">Acconto (€)</label>
                         <input type="number" id="deposit" name="deposit" value={eventFormData.deposit}
                                className={styles.inputCustomClassDark} onChange={handleChange}
-                               placeholder="Deposito..." min="0" step="0.01"/>
+                               placeholder="Acconto..." min="0" step="0.01"/>
                     </div>
                     <div>
                         <label htmlFor="total"

@@ -69,7 +69,6 @@ export const translatedFormFields: Record<keyof EventFormData, string> = {
 export const validate = (eventFormData: EventFormData, openAlert: (alertTitle: string) => void): boolean => {
     for (const [key, value] of Object.entries(eventFormData)) {
         const notValidDate = key === 'eventDate' && value?.startDate < new Date();
-        const notCheckedTerms = key === 'agreedToTerms' && value === false;
         const notValidAge = key === 'userAge' && value <= 0;
         const notValidTotal = key === 'total' && value <= 0;
         const notValidTime = key === 'eventEndTime' && value <= eventFormData.eventStartTime;
@@ -81,10 +80,6 @@ export const validate = (eventFormData: EventFormData, openAlert: (alertTitle: s
         }
         if (notValidAge) {
             openAlert(`L'età non può essere inferiore a 1`);
-            return false;
-        }
-        if (notCheckedTerms) {
-            openAlert(`Devi accettare i termini e le condizioni`);
             return false;
         }
         if (notValidTotal) {
