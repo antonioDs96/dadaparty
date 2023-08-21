@@ -14,3 +14,5 @@ export interface EventFormData {
     deposit: number;
     total: number;
 }
+
+export type EventFormFields = keyof EventFormData;

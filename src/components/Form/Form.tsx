@@ -6,7 +6,7 @@ import Datepicker, {DateValueType} from "react-tailwindcss-datepicker";
 import styles from "./Form.module.css";
 import TimeInput from "@/components/TimeInput/TimeInput";
 import {format} from "date-fns";
-import {isDataValueType, renderPdf, translatedFormFields} from "@/components/Form/Form.helpers";
+import {isDataValueType, renderPdf, validate} from "@/components/Form/Form.helpers";
 import useAlertStore from "@/store/alert/AlertStore";
 
 
@@ -43,50 +43,9 @@ const Form: FC = () => {
         }));
     }
 
-
     const openPopup = () => {
         const eventDateElement = document.getElementById("eventDate") as HTMLInputElement;
         eventDateElement.focus();
-    }
-
-    const validate = (eventFormData: EventFormData): boolean => {
-        for (const [key, value] of Object.entries(eventFormData)) {
-            const notValidDate = key === 'eventDate' && value?.startDate < new Date();
-            const notCheckedTerms = key === 'agreedToTerms' && value === false;
-            const notValidAge = key === 'userAge' && value <= 0;
-            const notValidTotal = key === 'total' && value <= 0;
-            const notValidTime = key === 'eventEndTime' && value <= eventFormData.eventStartTime;
-            const notValidDeposit = key === 'deposit' && value > eventFormData.total;
-            if (value === null || value === undefined || value === '') {
-                openAlert(`Il campo ${translatedFormFields[key as keyof EventFormData]} non può essere vuoto`);
-                return false;
-            }
-            if (notValidAge) {
-                openAlert(`L'età non può essere inferiore a 1`);
-                return false;
-            }
-            if (notCheckedTerms) {
-                openAlert(`Devi accettare i termini e le condizioni`);
-                return false;
-            }
-            if (notValidTotal) {
-                openAlert(`Il totale non può essere inferiore o uguale a 0`);
-                return false;
-            }
-            if (notValidTime) {
-                openAlert(`L'orario di fine evento non può essere inferiore a quello di inizio evento`);
-                return false;
-            }
-            if (notValidDeposit) {
-                openAlert(`L'acconto non può essere maggiore del totale`);
-                return false;
-            }
-            if (notValidDate) {
-                openAlert(`La data dell'evento non può essere antecedente a quella odierna`);
-                return false;
-            }
-        }
-        return true;
     }
 
     const handleSubmit = (formEvent: FormEvent<HTMLFormElement>) => {
@@ -97,7 +56,7 @@ const Form: FC = () => {
             openPopup();
             return;
         }
-        if (!validate(eventFormData)) return;
+        if (!validate(eventFormData, openAlert)) return;
         renderPdf(eventFormData);
     }
 

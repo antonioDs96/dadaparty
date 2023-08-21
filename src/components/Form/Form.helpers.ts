@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import {EventFormData} from "@/components/Form/Form.types";
+import {EventFormData, EventFormFields} from "@/components/Form/Form.types";
 import {ChangeEvent} from "react";
 import {DateValueType} from "react-tailwindcss-datepicker";
 
@@ -29,7 +29,7 @@ export const renderPdf = async (eventFormData: EventFormData) => {
     doc.text('Acconto ricevuto in data odierna: ' + eventFormData.deposit + " €", 10, 140);
     doc.text('Totale: ' + eventFormData.total + " €", 140, 140);
 
-    //FIRME e altro
+    //Firme
     doc.text('Firme:', 10, 150);
     //set font size lower
     doc.setFontSize(10);
@@ -45,6 +45,7 @@ export const renderPdf = async (eventFormData: EventFormData) => {
     doc.save(`${eventFormData.userName}_${eventFormData.userSurname}_${eventDate}.pdf`);
 }
 
+// type guard to narrow down the type of the event
 export const isDataValueType = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | DateValueType): e is DateValueType => {
     return e != null && "startDate" in e;
 }
@@ -63,4 +64,45 @@ export const translatedFormFields: Record<keyof EventFormData, string> = {
     chosenService: "Servizio scelto",
     deposit: "Acconto",
     total: "Totale",
+}
+
+export const validate = (eventFormData: EventFormData, openAlert: (alertTitle: string) => void): boolean => {
+    for (const [key, value] of Object.entries(eventFormData)) {
+        const notValidDate = key === 'eventDate' && value?.startDate < new Date();
+        const notCheckedTerms = key === 'agreedToTerms' && value === false;
+        const notValidAge = key === 'userAge' && value <= 0;
+        const notValidTotal = key === 'total' && value <= 0;
+        const notValidTime = key === 'eventEndTime' && value <= eventFormData.eventStartTime;
+        const notValidDeposit = key === 'deposit' && value > eventFormData.total;
+
+        if (value === null || value === undefined || value === '') {
+            openAlert(`Il campo ${translatedFormFields[key as EventFormFields]} non può essere vuoto`);
+            return false;
+        }
+        if (notValidAge) {
+            openAlert(`L'età non può essere inferiore a 1`);
+            return false;
+        }
+        if (notCheckedTerms) {
+            openAlert(`Devi accettare i termini e le condizioni`);
+            return false;
+        }
+        if (notValidTotal) {
+            openAlert(`Il totale non può essere inferiore o uguale a 0`);
+            return false;
+        }
+        if (notValidTime) {
+            openAlert(`L'orario di fine evento non può essere inferiore a quello di inizio evento`);
+            return false;
+        }
+        if (notValidDeposit) {
+            openAlert(`L'acconto non può essere maggiore del totale`);
+            return false;
+        }
+        if (notValidDate) {
+            openAlert(`La data dell'evento non può essere antecedente a quella odierna`);
+            return false;
+        }
+    }
+    return true;
 }
