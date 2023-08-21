@@ -29,6 +29,7 @@ const Form: FC = () => {
         originTown: 'Lecce',
         chosenService: 'All Inclusive',
         deposit: 0,
+        total: 0,
         agreedToTerms: acceptedTerms,
     })
 
@@ -39,8 +40,12 @@ const Form: FC = () => {
                 eventDate: event
             }))
         }
-        const {name, type} = event.target;
+        const {name, type, value} = event.target;
         if (name === 'agreedToTerms') toggleTerms();
+        if (name === 'userAge') {
+            openAlert(`L'età non può essere inferiore a 1`);
+            return;
+        }
         if (type === 'checkbox') {
             const {checked} = event.target as HTMLInputElement;
             setEventFormData(prevState => ({
@@ -65,6 +70,8 @@ const Form: FC = () => {
         for (const [key, value] of Object.entries(eventFormData)) {
             const notCheckedTerms = key === 'agreedToTerms' && value === false;
             const notValidAge = key === 'userAge' && value <= 0;
+            const notValidTotal = key === 'total' && value <= 0;
+            const notValidTime = key === 'eventEndTime' && value <= eventFormData.eventStartTime;
             if (value === null || value === undefined || value === '') {
                 openAlert(`Il campo ${translatedFormFields[key as keyof EventFormData]} non può essere vuoto`);
                 return false;
@@ -75,6 +82,14 @@ const Form: FC = () => {
             }
             if (notCheckedTerms) {
                 openAlert(`Devi accettare i termini e le condizioni`);
+                return false;
+            }
+            if (notValidTotal) {
+                openAlert(`Il totale non può essere inferiore o uguale a 0`);
+                return false;
+            }
+            if (notValidTime) {
+                openAlert(`L'orario di fine evento non può essere inferiore a quello di inizio evento`);
                 return false;
             }
         }
@@ -179,10 +194,17 @@ const Form: FC = () => {
                     </div>
                     <div>
                         <label htmlFor="deposit"
-                               className="block mb-2 text-sm font-medium text">Acconto</label>
+                               className="block mb-2 text-sm font-medium text">Acconto (€)</label>
                         <input type="number" id="deposit" name="deposit" value={eventFormData.deposit}
                                className={styles.inputCustomClassDark} onChange={handleChange}
                                placeholder="Deposito..." min="0"/>
+                    </div>
+                    <div>
+                        <label htmlFor="total"
+                               className="block mb-2 text-sm font-medium text">Totale (€)</label>
+                        <input type="number" id="total" name="total" value={eventFormData.total}
+                               className={styles.inputCustomClassDark} onChange={handleChange}
+                               placeholder="Totale..." min="0"/>
                     </div>
                 </div>
                 <div className="flex items-start mb-6">

@@ -25,8 +25,8 @@ export const renderPdf = async (eventFormData: EventFormData) => {
     doc.text('Comune di Residenza: ' + eventFormData.originTown, 10, 110);
     // doc.text('Dati Evento:', 10, 110);
     doc.text('Servizio Scelto: ' + eventFormData.chosenService, 10, 130);
-    doc.text('Acconto ricevuto in data odierna: ' + eventFormData.deposit, 10, 140);
-    doc.text('Totale:', 130, 140);
+    doc.text('Acconto ricevuto in data odierna: ' + eventFormData.deposit + " €", 10, 140);
+    doc.text('Totale: ' + eventFormData.total + " €", 140, 140);
 
     //FIRME e altro
     doc.text('Firme:', 10, 150);
@@ -64,5 +64,6 @@ export const translatedFormFields: Record<keyof EventFormData, string> = {
     originTown: "Comune di residenza",
     chosenService: "Servizio scelto",
     deposit: "Acconto",
+    total: "Totale",
     agreedToTerms: "Accettazione dei termini"
 }
