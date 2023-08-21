@@ -5,7 +5,7 @@ import {DateValueType} from "react-tailwindcss-datepicker";
 
 export const renderPdf = async (eventFormData: EventFormData) => {
     var doc = new jsPDF();
-
+    const eventDate = eventFormData.eventDate?.startDate;
     //start writing pdf
 
     //headline
@@ -15,15 +15,16 @@ export const renderPdf = async (eventFormData: EventFormData) => {
     //body
     doc.setFontSize(20);
     doc.text('Modulo Prenotazione del : ' + eventFormData.submitDate, 10, 20);
-    doc.text('Data Evento: ' + eventFormData.eventDate?.startDate, 10, 30);
+    doc.text('Data Evento: ' + eventDate, 10, 30);
     doc.text('Dalle: ' + eventFormData.eventStartTime, 10, 40);
     doc.text('Alle: ' + eventFormData.eventEndTime, 10, 50);
+
     doc.text('Nome Festeggiato: ' + eventFormData.userName, 10, 70);
     doc.text('Cognome Festeggiato: ' + eventFormData.userSurname, 10, 80);
     doc.text('Età Festeggiato: ' + eventFormData.userAge, 10, 90);
     doc.text('Telefono: ' + eventFormData.userPhone, 10, 100);
     doc.text('Comune di Residenza: ' + eventFormData.originTown, 10, 110);
-    // doc.text('Dati Evento:', 10, 110);
+
     doc.text('Servizio Scelto: ' + eventFormData.chosenService, 10, 130);
     doc.text('Acconto ricevuto in data odierna: ' + eventFormData.deposit + " €", 10, 140);
     doc.text('Totale: ' + eventFormData.total + " €", 140, 140);
@@ -39,12 +40,9 @@ export const renderPdf = async (eventFormData: EventFormData) => {
     //an underline for signing
     doc.line(120, 170, 180, 170);
 
-    doc.text('Eventuali' + ' OPERATORI ESTERNI,PER ALLESTIMENTO SEET-TABLE DOVRANNO METTERSI IN CONTATTO CON UN NOSTRO OPERATORE.\n'.toLowerCase() +
-        'Ricordiamo ' + 'CHE PER TALE SERVIZIO BISOGNA ESSERE MUNUTI DI STRUTTURA CARTOLLENISTICA.\n'.toLowerCase() +
-        'N.B: ' + 'Divieto' + 'ASSOLUTO DI APPLICARE STAMPE SULLE NOSTRE SCENOGRAFIE'.toLowerCase(), 10, 190);
 
     //save pdf
-    doc.save("form_data.pdf");
+    doc.save(`${eventFormData.userName}_${eventFormData.userSurname}_${eventDate}.pdf`);
 }
 
 export const isDataValueType = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | DateValueType): e is DateValueType => {
@@ -65,5 +63,4 @@ export const translatedFormFields: Record<keyof EventFormData, string> = {
     chosenService: "Servizio scelto",
     deposit: "Acconto",
     total: "Totale",
-    agreedToTerms: "Accettazione dei termini"
 }

@@ -1,22 +1,19 @@
 'use client';
 
-import React, {ChangeEvent, FC, FormEvent, useState} from "react";
+import React, {ChangeEvent, FC, FormEvent, useEffect, useState} from "react";
 import {EventFormData} from "@/components/Form/Form.types";
 import Datepicker, {DateValueType} from "react-tailwindcss-datepicker";
 import styles from "./Form.module.css";
 import TimeInput from "@/components/TimeInput/TimeInput";
-import Link from "next/link";
 import {format} from "date-fns";
 import {isDataValueType, renderPdf, translatedFormFields} from "@/components/Form/Form.helpers";
 import useAlertStore from "@/store/alert/AlertStore";
-import useTermsStore from "@/store/termsStore/termsStore";
 
 
 const Form: FC = () => {
     const openAlert = useAlertStore(state => state.openAlert);
-    const acceptedTerms = useTermsStore(state => state.acceptedTerms);
-    const toggleTerms = useTermsStore(state => state.toggleTerms);
 
+    const [isDark, setIsDark] = useState(false);
     const [eventFormData, setEventFormData] = useState<EventFormData>({
         submitDate: format(new Date(), 'dd/MM/yyyy'),
         eventDate: null,
@@ -30,7 +27,6 @@ const Form: FC = () => {
         chosenService: 'All Inclusive',
         deposit: 0,
         total: 0,
-        agreedToTerms: acceptedTerms,
     })
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement> | DateValueType) => {
@@ -40,26 +36,13 @@ const Form: FC = () => {
                 eventDate: event
             }))
         }
-        const {name, type, value} = event.target;
-        if (name === 'agreedToTerms') toggleTerms();
-        if (name === 'userAge') {
-            openAlert(`L'età non può essere inferiore a 1`);
-            return;
-        }
-        if (type === 'checkbox') {
-            const {checked} = event.target as HTMLInputElement;
-            setEventFormData(prevState => ({
-                ...prevState,
-                [name]: checked
-            }));
-        } else {
-            const {value} = event.target;
-            setEventFormData(prevState => ({
-                ...prevState,
-                [name]: value
-            }));
-        }
+        const {name, value} = event.target;
+        setEventFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
     }
+
 
     const openPopup = () => {
         const eventDateElement = document.getElementById("eventDate") as HTMLInputElement;
@@ -68,10 +51,12 @@ const Form: FC = () => {
 
     const validate = (eventFormData: EventFormData): boolean => {
         for (const [key, value] of Object.entries(eventFormData)) {
+            const notValidDate = key === 'eventDate' && value?.startDate < new Date();
             const notCheckedTerms = key === 'agreedToTerms' && value === false;
             const notValidAge = key === 'userAge' && value <= 0;
             const notValidTotal = key === 'total' && value <= 0;
             const notValidTime = key === 'eventEndTime' && value <= eventFormData.eventStartTime;
+            const notValidDeposit = key === 'deposit' && value > eventFormData.total;
             if (value === null || value === undefined || value === '') {
                 openAlert(`Il campo ${translatedFormFields[key as keyof EventFormData]} non può essere vuoto`);
                 return false;
@@ -92,6 +77,14 @@ const Form: FC = () => {
                 openAlert(`L'orario di fine evento non può essere inferiore a quello di inizio evento`);
                 return false;
             }
+            if (notValidDeposit) {
+                openAlert(`L'acconto non può essere maggiore del totale`);
+                return false;
+            }
+            if (notValidDate) {
+                openAlert(`La data dell'evento non può essere antecedente a quella odierna`);
+                return false;
+            }
         }
         return true;
     }
@@ -105,10 +98,12 @@ const Form: FC = () => {
             return;
         }
         if (!validate(eventFormData)) return;
-
-
         renderPdf(eventFormData);
     }
+
+    useEffect(() => {
+        setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }, []);
 
     return (
         <>
@@ -127,27 +122,30 @@ const Form: FC = () => {
                         <Datepicker value={eventFormData.eventDate} onChange={handleChange}
                                     inputId="eventDate"
                                     displayFormat={"DD/MM/YYYY"}
-                                    startFrom={new Date()} asSingle placeholder={"Inserisci la data dell'evento"}
+                                    startFrom={new Date()} asSingle
+                                    placeholder={"Inserisci la data dell'evento"}
                                     primaryColor={"fuchsia"}
-
+                                    readOnly
                         />
                     </div>
                     <div>
                         <label htmlFor="eventStartTime"
                                className="block mb-2 text-sm font-medium">Orario Inizio Evento</label>
-                        <TimeInput onChange={handleChange} value={eventFormData.eventStartTime} name="eventStartTime"/>
+                        <TimeInput onChange={handleChange} value={eventFormData.eventStartTime} name="eventStartTime"
+                                   isDarkMode={isDark}/>
                     </div>
                     <div>
                         <label htmlFor="eventEndTime"
                                className="block mb-2 text-sm font-medium">Orario Fine Evento</label>
-                        <TimeInput onChange={handleChange} value={eventFormData.eventEndTime} name="eventEndTime"/>
+                        <TimeInput onChange={handleChange} value={eventFormData.eventEndTime} name="eventEndTime"
+                                   isDarkMode={isDark}/>
                     </div>
                     <div>
                         <label htmlFor="userName"
                                className="block mb-2 text-sm font-medium text">Nome Festeggiato</label>
                         <input type="text" id="userName" name="userName" value={eventFormData.userName}
                                className={styles.inputCustomClassDark} onChange={handleChange}
-                               placeholder="Nome..."/>
+                               placeholder="Nome..." pattern="[A-Za-z\s]+" title="Ammesse solo lettere"/>
                     </div>
                     <div>
                         <label htmlFor="userSurname"
@@ -155,7 +153,7 @@ const Form: FC = () => {
                         <input type="text" id="userSurname" name="userSurname" value={eventFormData.userSurname}
                                onChange={handleChange}
                                className={styles.inputCustomClassDark}
-                               placeholder="Cognome..."/>
+                               placeholder="Cognome..." pattern="[A-Za-z\s]+" title="Ammesse solo lettere"/>
                     </div>
                     <div>
                         <label htmlFor="userAge"
@@ -170,7 +168,7 @@ const Form: FC = () => {
                         <input type="tel" id="phone" name={"userPhone"} value={eventFormData.userPhone}
                                onChange={handleChange}
                                className={styles.inputCustomClassDark}
-                               pattern="\d{10}" maxLength={10} placeholder="3295990033"/>
+                               pattern="\d{10}" maxLength={10} placeholder="3290000000"/>
                     </div>
                     <div>
                         <label htmlFor="originTown" id="originTown" className="block mb-2 text-sm font-medium">Comune di
@@ -178,7 +176,7 @@ const Form: FC = () => {
                         <input type="text" id="originTown" name="originTown" value={eventFormData.originTown}
                                onChange={handleChange}
                                className={styles.inputCustomClassDark}
-                               placeholder="Comune di Residenza..."/>
+                               placeholder="Comune di Residenza..." pattern="[A-Za-z\s]+" title="Ammesse solo lettere"/>
                     </div>
                     <div>
                         <label htmlFor="chosenService"
@@ -197,28 +195,15 @@ const Form: FC = () => {
                                className="block mb-2 text-sm font-medium text">Acconto (€)</label>
                         <input type="number" id="deposit" name="deposit" value={eventFormData.deposit}
                                className={styles.inputCustomClassDark} onChange={handleChange}
-                               placeholder="Deposito..." min="0"/>
+                               placeholder="Deposito..." min="0" step="0.01"/>
                     </div>
                     <div>
                         <label htmlFor="total"
                                className="block mb-2 text-sm font-medium text">Totale (€)</label>
                         <input type="number" id="total" name="total" value={eventFormData.total}
                                className={styles.inputCustomClassDark} onChange={handleChange}
-                               placeholder="Totale..." min="0"/>
+                               placeholder="Totale..." min="0" step="0.01"/>
                     </div>
-                </div>
-                <div className="flex items-start mb-6">
-                    <div className="flex items-center h-5">
-                        <input id="agreedToTerms" type="checkbox" checked={eventFormData.agreedToTerms}
-                               onChange={handleChange}
-                               name="agreedToTerms"
-                               className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:border-fuchsia-500 focus:ring-fuchsia-500/20 checked:bg-fuchsia-500 hover:bg-fuchsia-500/20 active:bg-fuchsia-500/30"
-                        />
-                    </div>
-                    <label htmlFor="agreedToTerms" className="ml-2 text-sm font-medium text-gray-900">Sono a conoscenza
-                        <Link href="/termini" className="text-fuchsia-500 hover:underline"> dei termini e
-                            delle
-                            condizioni</Link>.</label>
                 </div>
                 <button type="submit"
                         className="text-white bg-third hover:bg-fuchsia-800 focus:ring-4 focus:outline-none focus:ring-fuchsia-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Invia

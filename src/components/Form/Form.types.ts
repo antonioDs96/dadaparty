@@ -13,5 +13,4 @@ export interface EventFormData {
     chosenService: "Mattina" | "Primo Turno" | "Serale" | "All Inclusive" | "";
     deposit: number;
     total: number;
-    agreedToTerms: boolean;
 }
