@@ -18,8 +18,8 @@ const Form: FC = () => {
     const [eventFormData, setEventFormData] = useState<EventFormData>({
         submitDate: format(new Date(), 'dd/MM/yyyy'),
         eventDate: null,
-        eventStartTime: '',
-        eventEndTime: '',
+        eventStartTime: '21:00',
+        eventEndTime: '23:00',
         userName: '',
         userSurname: '',
         userAge: 1,
@@ -162,6 +162,9 @@ const Form: FC = () => {
                             <option value="Mattina">Mattina</option>
                             <option value="Primo Turno">Primo Turno</option>
                             <option value="Serale">Serale</option>
+                            <option value="Sala 1">Sala 1</option>
+                            <option value="Sala 2.0">Sala 2.0</option>
+                            <option value="Sala 3.0">Sala 3.0</option>
                             <option value="All Inclusive">All Inclusive</option>
                         </select>
                     </div>

@@ -10,7 +10,7 @@ export interface EventFormData {
     userAge: number;
     userPhone: string;
     originTown: string;
-    chosenService: "Mattina" | "Primo Turno" | "Serale" | "All Inclusive" | "";
+    chosenService: "Sala 1" | "Sala 2.0" | "Sala 3.0" | "Mattina" | "Primo Turno" | "Serale" | "All Inclusive" | "";
     deposit: number;
     total: number;
 }

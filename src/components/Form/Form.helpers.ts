@@ -2,12 +2,20 @@ import jsPDF from "jspdf";
 import {EventFormData, EventFormFields} from "@/components/Form/Form.types";
 import {ChangeEvent} from "react";
 import {DateValueType} from "react-tailwindcss-datepicker";
+import {format, parse} from "date-fns";
 
 export const renderPdf = async (eventFormData: EventFormData) => {
-    var doc = new jsPDF();
+    const doc = new jsPDF();
     const eventDate = eventFormData.eventDate?.startDate;
-    //start writing pdf
+    let formattedDate;
 
+    if (eventDate !== undefined && eventDate !== null && eventDate !== "") {
+        const parsedDate = parse(eventDate as string, 'yyyy-MM-dd', new Date());
+        formattedDate = format(parsedDate, 'dd/MM/yyyy');
+    }
+
+
+    //start writing pdf
     //headline
     doc.setFontSize(25);
     doc.text('DadaParty', 10, 10);
@@ -15,7 +23,7 @@ export const renderPdf = async (eventFormData: EventFormData) => {
     //body
     doc.setFontSize(20);
     doc.text('Modulo Prenotazione del : ' + eventFormData.submitDate, 10, 20);
-    doc.text('Data Evento: ' + eventDate, 10, 30);
+    doc.text('Data Evento: ' + formattedDate, 10, 30);
     doc.text('Dalle: ' + eventFormData.eventStartTime, 10, 40);
     doc.text('Alle: ' + eventFormData.eventEndTime, 10, 50);
 
@@ -40,6 +48,16 @@ export const renderPdf = async (eventFormData: EventFormData) => {
     //an underline for signing
     doc.line(120, 170, 180, 170);
 
+    doc.setFontSize(8);
+    doc.text("DATI PER FATTURA ELETTRONICA DOVRANNO ESSERE COMUNICATI AD INIZIO FESTA.                                                                                                                                                                                                                                                                             \n" +
+        "EVENTUALI OPERATORI ESTERNI, PER ALLESTIMENTO SEET-TABLE DOVRANNO METTERSI IN CONTATTO CON UN NOSTRO OPERATORE.\n" +
+        "RICORDIAMO CHE PER TALE SERVIZIO BISOGNA ESSERE MUNUTI DI STRUTTURA CARTOLLENISTICA.", 10, 180);
+    doc.text("N.B.DIVIETO ASSOLUTO DI APPLICARE STAMPE SULLE NOSTRE SCENOGRAFIE", 10, 200);
+    doc.text(" NATI PER GIOCO CRESCIUTI CON LA VOSTRA FIDUCIA.", 10, 210);
+
+    //insert an image in the pdf from the public folder
+    const imgData = await fetch(`/logoDada.jpeg`).then(res => res.blob()).then(blob => URL.createObjectURL(blob));
+    doc.addImage(imgData, 'PNG', 10, 220, 100, 70);
 
     //save pdf
     doc.save(`${eventFormData.userName}_${eventFormData.userSurname}_${eventDate}.pdf`);
@@ -66,6 +84,10 @@ export const translatedFormFields: Record<keyof EventFormData, string> = {
     total: "Totale",
 }
 
+const isEmptyField = (value: unknown) =>
+    value === null || value === undefined || value === '';
+
+
 export const validate = (eventFormData: EventFormData, openAlert: (alertTitle: string) => void): boolean => {
     for (const [key, value] of Object.entries(eventFormData)) {
         const notValidDate = key === 'eventDate' && value?.startDate < new Date();
@@ -74,7 +96,7 @@ export const validate = (eventFormData: EventFormData, openAlert: (alertTitle: s
         const notValidTime = key === 'eventEndTime' && value <= eventFormData.eventStartTime;
         const notValidDeposit = key === 'deposit' && value > eventFormData.total;
 
-        if (value === null || value === undefined || value === '') {
+        if (isEmptyField(value)) {
             openAlert(`Il campo ${translatedFormFields[key as EventFormFields]} non può essere vuoto`);
             return false;
         }
