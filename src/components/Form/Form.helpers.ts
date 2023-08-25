@@ -18,46 +18,49 @@ export const renderPdf = async (eventFormData: EventFormData) => {
     //start writing pdf
     //headline
     doc.setFontSize(25);
-    doc.text('DadaParty', 10, 10);
-
+    //move up the image as headline
+    const imgData = await fetch(`/logoDada.jpeg`).then(res => res.blob()).then(blob => URL.createObjectURL(blob));
+    doc.addImage(imgData, 'PNG', 10, 10, 100, 70);
+    doc.text("", 10, 0);
     //body
-    doc.setFontSize(20);
-    doc.text('Modulo Prenotazione del : ' + eventFormData.submitDate, 10, 20);
-    doc.text('Data Evento: ' + formattedDate, 10, 30);
-    doc.text('Dalle: ' + eventFormData.eventStartTime, 10, 40);
-    doc.text('Alle: ' + eventFormData.eventEndTime, 10, 50);
+    doc.setFontSize(15);
+    doc.text('Modulo Prenotazione del : ' + eventFormData.submitDate, 10, 90);
+    doc.text('Data Evento: ' + formattedDate, 10, 100);
+    doc.text('Dalle: ' + eventFormData.eventStartTime, 10, 120);
+    doc.text('Alle: ' + eventFormData.eventEndTime, 10, 130);
 
-    doc.text('Nome Festeggiato: ' + eventFormData.userName, 10, 70);
-    doc.text('Cognome Festeggiato: ' + eventFormData.userSurname, 10, 80);
-    doc.text('Età Festeggiato: ' + eventFormData.userAge, 10, 90);
-    doc.text('Telefono: ' + eventFormData.userPhone, 10, 100);
-    doc.text('Comune di Residenza: ' + eventFormData.originTown, 10, 110);
+    doc.text('Nome Festeggiato: ' + eventFormData.userName, 10, 150);
+    doc.text('Cognome Festeggiato: ' + eventFormData.userSurname, 10, 160);
+    doc.text('Età Festeggiato: ' + eventFormData.userAge, 10, 170);
+    doc.text('Telefono: ' + eventFormData.userPhone, 10, 180);
+    doc.text('Comune di Residenza: ' + eventFormData.originTown, 10, 190);
 
-    doc.text('Servizio Scelto: ' + eventFormData.chosenService, 10, 130);
-    doc.text('Acconto ricevuto in data odierna: ' + eventFormData.deposit + " €", 10, 140);
-    doc.text('Totale: ' + eventFormData.total + " €", 140, 140);
+    doc.text('Servizio Scelto: ' + eventFormData.chosenService, 10, 210);
+    doc.text('Sala: ' + eventFormData.room, 10, 220);
+    doc.text('Acconto ricevuto in data odierna: ' + eventFormData.deposit + " €", 10, 230);
+    doc.text('Totale: ' + eventFormData.total + " €", 140, 230);
+
 
     //Firme
-    doc.text('Firme:', 10, 150);
+    doc.text('Firme:', 10, 240);
     //set font size lower
     doc.setFontSize(10);
-    doc.text('Funzionario o responsabile DadaParty', 10, 160);
+    doc.text('Funzionario o responsabile DadaParty', 10, 250);
     //an underline for signing
-    doc.line(10, 170, 60, 170);
-    doc.text('IN QUALITA’DI GENITORE O FACENTE LE VECI'.toLowerCase(), 120, 160);
+    doc.line(10, 260, 60, 260);
+    doc.text('IN QUALITA’DI GENITORE O FACENTE LE VECI'.toLowerCase(), 120, 250);
     //an underline for signing
-    doc.line(120, 170, 180, 170);
+    doc.line(120, 260, 180, 260);
 
     doc.setFontSize(8);
     doc.text("DATI PER FATTURA ELETTRONICA DOVRANNO ESSERE COMUNICATI AD INIZIO FESTA.                                                                                                                                                                                                                                                                             \n" +
         "EVENTUALI OPERATORI ESTERNI, PER ALLESTIMENTO SEET-TABLE DOVRANNO METTERSI IN CONTATTO CON UN NOSTRO OPERATORE.\n" +
-        "RICORDIAMO CHE PER TALE SERVIZIO BISOGNA ESSERE MUNUTI DI STRUTTURA CARTOLLENISTICA.", 10, 180);
-    doc.text("N.B.DIVIETO ASSOLUTO DI APPLICARE STAMPE SULLE NOSTRE SCENOGRAFIE", 10, 200);
-    doc.text(" NATI PER GIOCO CRESCIUTI CON LA VOSTRA FIDUCIA.", 10, 210);
+        "RICORDIAMO CHE PER TALE SERVIZIO BISOGNA ESSERE MUNUTI DI STRUTTURA CARTOLLENISTICA.", 10, 280);
+    doc.text("N.B.DIVIETO ASSOLUTO DI APPLICARE STAMPE SULLE NOSTRE SCENOGRAFIE", 10, 290);
+    doc.text(" NATI PER GIOCO CRESCIUTI CON LA VOSTRA FIDUCIA.", 10, 300);
 
     //insert an image in the pdf from the public folder
-    const imgData = await fetch(`/logoDada.jpeg`).then(res => res.blob()).then(blob => URL.createObjectURL(blob));
-    doc.addImage(imgData, 'PNG', 10, 220, 100, 70);
+
 
     //save pdf
     doc.save(`${eventFormData.userName}_${eventFormData.userSurname}_${eventDate}.pdf`);
@@ -80,6 +83,7 @@ export const translatedFormFields: Record<keyof EventFormData, string> = {
     userPhone: "Telefono",
     originTown: "Comune di residenza",
     chosenService: "Servizio scelto",
+    room: "Sala",
     deposit: "Acconto",
     total: "Totale",
 }
