@@ -186,7 +186,7 @@ const Form: FC = () => {
                                 className={styles.inputCustomClassDark}>
                             <option value="Contanti">Contanti</option>
                             <option value="Carta">Carta</option>
-                            <option value="Serale">Bonifico</option>
+                            <option value="Bonifico">Bonifico</option>
                         </select>
                     </div>
                     <div>
