@@ -100,6 +100,8 @@ const Form: FC = () => {
                                     placeholder={"Inserisci la data dell'evento"}
                                     primaryColor={"fuchsia"}
                                     readOnly
+                                    startWeekOn="mon"
+                                    i18n={"it"}
                         />
                     </div>
                     <div>
