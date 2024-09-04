@@ -12,6 +12,7 @@ export interface EventFormData {
     originTown: string;
     chosenService: "Sala 1" | "Sala 2.0" | "Sala 3.0" | "Mattina" | "Primo Turno" | "Serale" | "All Inclusive" | "";
     room: "Sala 1" | "Sala 2.0" | "Sala 3.0" | "";
+    payment: "Contanti" | "Carta" | "Bonifico";
     deposit: number;
     total: number;
 }
