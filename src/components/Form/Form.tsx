@@ -26,6 +26,7 @@ const Form: FC = () => {
         userPhone: '',
         originTown: 'Lecce',
         room: 'Sala 1',
+        payment: 'Contanti',
         chosenService: 'All Inclusive',
         deposit: 0,
         total: 0,
@@ -175,6 +176,17 @@ const Form: FC = () => {
                             <option value="Sala 1">Sala 1</option>
                             <option value="Sala 2.0">Sala 2.0</option>
                             <option value="Sala 3.0">Sala 3.0</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label htmlFor="payment"
+                               className="block mb-2 text-sm font-medium">Metodo di Pagamento</label>
+                        <select name="payment" id="payment" value={eventFormData.payment}
+                                onChange={handleChange}
+                                className={styles.inputCustomClassDark}>
+                            <option value="Contanti">Contanti</option>
+                            <option value="Carta">Carta</option>
+                            <option value="Serale">Bonifico</option>
                         </select>
                     </div>
                     <div>
