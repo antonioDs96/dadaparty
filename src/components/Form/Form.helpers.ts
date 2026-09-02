@@ -54,10 +54,10 @@ export const renderPdf = async (eventFormData: EventFormData) => {
     doc.line(120, 231, 180, 231);
 
     doc.setFontSize(8);
-    doc.text("DATI PER FATTURA ELETTRONICA DOVRANNO ESSERE COMUNICATI AD INIZIO FESTA.                                                                                                                                                                                                                                                                             \n" +
-        "EVENTUALI OPERATORI ESTERNI, PER ALLESTIMENTO SEET-TABLE DOVRANNO METTERSI IN CONTATTO CON UN NOSTRO OPERATORE.\n" +
-        "RICORDIAMO CHE PER TALE SERVIZIO BISOGNA ESSERE MUNUTI DI STRUTTURA CARTOLLENISTICA.", 10, 251);
-    doc.text("N.B.DIVIETO ASSOLUTO DI APPLICARE STAMPE SULLE NOSTRE SCENOGRAFIE", 10, 261);
+    //doc.text("DATI PER FATTURA ELETTRONICA DOVRANNO ESSERE COMUNICATI AD INIZIO FESTA.                                                                                                                                                                                                                                                                             \n" +
+    //    "EVENTUALI OPERATORI ESTERNI, PER ALLESTIMENTO SEET-TABLE DOVRANNO METTERSI IN CONTATTO CON UN NOSTRO OPERATORE.\n" +
+    //    "RICORDIAMO CHE PER TALE SERVIZIO BISOGNA ESSERE MUNUTI DI STRUTTURA CARTOLLENISTICA.", 10, 251);
+    //doc.text("N.B.DIVIETO ASSOLUTO DI APPLICARE STAMPE SULLE NOSTRE SCENOGRAFIE", 10, 261);
     doc.text(" NATI PER GIOCO CRESCIUTI CON LA VOSTRA FIDUCIA.", 10, 271);
 
     //disclaimer sul contratto inviato via WhatsApp
